@@ -2,14 +2,19 @@
 import { ref, onMounted } from 'vue';
 import { fetchCurrentWeather } from './api/weather';
 
+const isLoading = ref(false);
 const weatherData = ref(null);
 
 onMounted(async () => {
   try {
+    isLoading.value = true;
     weatherData.value = await fetchCurrentWeather(); 
   } catch (error) {
     console.error("Ошибка загрузки данных:", error);
   } 
+  finally{
+    isLoading.value = false;
+  }
 });
 
 </script>
@@ -17,7 +22,10 @@ onMounted(async () => {
 <template>
 <div class="container">
 <div class="block">Куку</div>
-<div class="block"><p>{{ weatherData }}</p></div>
+<div class="block">
+  <p v-if="!isLoading">Температура: {{ weatherData?.temp_c }}</p>
+  <p v-else>Загрузка...</p>
+</div>
 </div>
 </template>
 
