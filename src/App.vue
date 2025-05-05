@@ -1,26 +1,49 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { fetchCurrentWeather } from './api/weather';
 
+const city = ref(null); 
 const weatherData = ref(null);
 const isLoading = ref(false);
+const error = ref(null);
 
-onMounted(async () => {
+const loadWeather = async () => {
+  if (!city.value.trim()) return;
+
   try {
     isLoading.value = true;
-    weatherData.value = await fetchCurrentWeather(); 
-  } catch (error) {
-    console.error("Ошибка загрузки данных:", error);
-  } 
-  finally {
-    isLoading.value = false;  
+    error.value = null;
+    weatherData.value = await fetchCurrentWeather(city.value);
+  } catch (err) {
+    error.value = 'Не удалось загрузить данные';
+    console.error("Ошибка загрузки данных:", err);
+  } finally {
+    isLoading.value = false;
   }
-});
+};
 
+loadWeather();
+
+const handleKeyPress = (e) => {
+  if (e.key === 'Enter') {
+    loadWeather();
+  }
+};
 </script>
 
 <template>
-  <div class="weather-app">
+  <div class="search-container">
+      <input
+        v-model="city"
+        @keypress="handleKeyPress"
+        placeholder="Введите город"
+        class="search-input"
+      />
+      <button @click="loadWeather" class="search-button">
+        Поиск
+      </button>
+    </div>
+  <div class="weather-app">    
     <div class="header">Погода</div>
     
     <section v-if="!isLoading" class="weather-content">
@@ -37,7 +60,7 @@ onMounted(async () => {
         
         <div class="detail-card">
           <div class="detail-icon">
-            <svg class="wind-icon" viewBox="0 0 24 24"> //стрелка не крутится
+            <svg class="wind-icon" viewBox="0 0 24 24" :style="{ transform: `rotate(${weatherData?.wind_degree}deg)` }"> 
               <path d="M12 2L4 12L12 22M20 12H4"/>
             </svg>
           </div>
