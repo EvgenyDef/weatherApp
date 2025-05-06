@@ -32,7 +32,86 @@ const handleKeyPress = (e) => {
 </script>
 
 <template>
-  <div class="search-container">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <section class="temp">
+    <header>
+      <div class="logo">
+        ЯСНО?
+      </div>
+      <div>
+        <input
+        v-model="city"
+        @keypress="handleKeyPress"
+        placeholder="Введите город"
+        class="search-input"
+        />
+      </div>
+      
+    </header>
+
+
+    <main>
+      <section v-if="!isLoading" class="weather-content main-block">
+        <section>
+          <div class="small-text">
+            <i class='fa fa-thermometer'></i> Температура
+          </div>
+          <div class="average-text">
+            {{ city }}
+          </div>
+          <div class="temperature-block">
+            {{ weatherData?.temp_c }}°
+          </div>
+          <div>
+            <!--Здесь необзодимо выводить информацию о типе погоды (обласночть, переменная обласночть и тд) вместе с иконкой-->
+          </div>
+          <div>
+            <!--Здесь нужно вывести минимальную и максимальную температуру-->
+          </div>
+        </section>  
+      </section>
+        
+      <section v-if="!isLoading">
+        <div class="details-grid add-block">
+          <div class="detail-card">
+            <div class="detail-icon">💧</div>
+            <div class="detail-value">{{ weatherData?.humidity }}%</div>
+            <div class="detail-label">Влажность</div>
+          </div>
+          
+          <div class="detail-card">
+            <div class="detail-icon">
+              <svg class="wind-icon" viewBox="0 0 24 24" :style="{ transform: `rotate(${weatherData?.wind_degree}deg)` }"> 
+                <path d="M12 2L4 12L12 22M20 12H4"/>
+              </svg>
+            </div>
+            <div class="detail-value">{{ (weatherData?.wind_kph * 10 / 36).toFixed(1) }}</div>
+            <div class="detail-label">м/с {{ weatherData?.wind_dir }}</div>
+          </div>
+          
+          <div class="detail-card">
+            <div class="detail-icon">⏱️</div>
+            <div class="detail-value">{{ (weatherData?.pressure_mb * 0.750062).toFixed() }}</div>
+            <div class="detail-label">мм рт.ст.</div>
+          </div>
+        </div>
+      </section>
+    
+      <section v-else class="loading-section">
+        <div class="loading-spinner"></div>
+      </section>
+    </main>
+
+    <bottom>
+
+    </bottom>
+  </section>
+
+
+
+  <!--<div class="weather-app">   
+    <div class="search-container">
       <input
         v-model="city"
         @keypress="handleKeyPress"
@@ -42,8 +121,7 @@ const handleKeyPress = (e) => {
       <button @click="loadWeather" class="search-button">
         Поиск
       </button>
-    </div>
-  <div class="weather-app">    
+    </div> 
     <div class="header">Погода</div>
     
     <section v-if="!isLoading" class="weather-content">
@@ -79,10 +157,74 @@ const handleKeyPress = (e) => {
     <section v-else class="loading-section">
       <div class="loading-spinner"></div>
     </section>
-  </div>
+  </div>-->
 </template>
 
 <style scoped>
+
+.temp {
+  width: 100%;
+  height: 90%;
+  border:  0.5rem solid #00d2ff; 
+  margin-top: 1%; 
+
+}
+
+.logo {
+  font-size: 3.5rem;
+  color: #47CCFF;
+}
+
+header {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.search-input {
+  font-size: 3.5rem;
+  margin-top: 0.5rem;
+}
+
+.main-block {
+  border: 0.25rem solid rgba(255, 255, 255, 0);
+  border-radius: 25px;
+  background: linear-gradient(to right, #C2E7F5, #EFFBFD);
+  margin: 1rem;
+  width: 40%;
+}
+
+section {
+  font-family: "Oks free";
+}
+
+.small-text {
+  font-size: 1.2rem;
+}
+
+.average-text {
+  font-size: 2.3rem;
+}
+
+.add-block {
+  background-color: #E9F0F6;
+  margin: 1rem;
+  border: 0.25rem solid #E9F0F6;
+  border-radius: 25px;
+  width: 40%;
+  height: 9rem;
+}
+
+main {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+
+
+
+
 .weather-app {
   max-width: 375px;
   margin: 0 auto;
@@ -112,6 +254,7 @@ const handleKeyPress = (e) => {
   font-size: 72px;
   font-weight: 300;
   margin-bottom: 30px;
+
 }
 
 .details-grid {
