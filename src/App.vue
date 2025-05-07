@@ -55,12 +55,12 @@ const handleKeyPress = (e) => {
       <section v-if="!isLoading" class="weather-content main-block">
         <section>
           <div class="small-text">
-            <i class='fa fa-thermometer'></i> Температура
+            <i class='fa fa-thermometer'></i> температура
           </div>
           <div class="average-text">
             {{ city }}
           </div>
-          <div class="temperature-block">
+          <div class="temperature-block numbers">
             {{ weatherData?.temp_c }}°
           </div>
           <div>
@@ -76,7 +76,7 @@ const handleKeyPress = (e) => {
         <div class="details-grid add-block">
           <div class="detail-card">
             <div class="detail-icon">💧</div>
-            <div class="detail-value">{{ weatherData?.humidity }}%</div>
+            <div class="detail-value numbers">{{ weatherData?.humidity }}%</div>
             <div class="detail-label">Влажность</div>
           </div>
           
@@ -86,7 +86,7 @@ const handleKeyPress = (e) => {
                 <path d="M12 2L4 12L12 22M20 12H4"/>
               </svg>
             </div>
-            <div class="detail-value">{{ (weatherData?.wind_kph * 10 / 36).toFixed(1) }}</div>
+            <div class="detail-value numbers">{{ (weatherData?.wind_kph * 10 / 36).toFixed(1) }}</div>
             <div class="detail-label">м/с {{ weatherData?.wind_dir }}</div>
           </div>
           
@@ -171,9 +171,42 @@ const handleKeyPress = (e) => {
 }
 
 .logo {
-  font-size: 3.5rem;
+  font-size: 5rem;
   color: #47CCFF;
+  font-family: Oks;
 }
+
+@font-face {
+  font-family: Oks;
+  src: url("./components/fonts/Oks Free.otf");
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Light.ttf");
+}
+@font-face {
+  font-weight: 400; 
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Regular.ttf");
+}
+@font-face {
+  font-weight: 500;
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Medium.ttf");
+}
+@font-face {
+  font-weight: 600;
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Semibold.ttf");
+}
+@font-face {
+  font-weight: 700; 
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Bold.ttf");
+}
+
 
 header {
   display: flex;
@@ -182,8 +215,12 @@ header {
 
 
 .search-input {
-  font-size: 3.5rem;
-  margin-top: 0.5rem;
+  font-size: 2.5rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  font-family: Gilroy;
+  font-weight: 600;
+  border-radius: 10px;
 }
 
 .main-block {
@@ -195,15 +232,22 @@ header {
 }
 
 section {
-  font-family: "Oks free";
+  font-family: Gilroy;
 }
 
 .small-text {
   font-size: 1.2rem;
+  font-family: Gilroy;
+  font-weight: 500;
+}
+
+.numbers {
+  font-family: Oks;
 }
 
 .average-text {
   font-size: 2.3rem;
+  font-weight: 600;
 }
 
 .add-block {
@@ -220,15 +264,10 @@ main {
   justify-content: space-around;
 }
 
-
-
-
-
-
 .weather-app {
   max-width: 375px;
   margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Gilroy";
   background: linear-gradient(to bottom, #3a7bd5, #00d2ff);
   color: white;
   border-radius: 20px;
@@ -289,6 +328,7 @@ main {
 .detail-label {
   font-size: 12px;
   opacity: 0.8;
+  font-weight: 500;
 }
 
 .wind-icon {
