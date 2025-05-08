@@ -332,7 +332,7 @@ footer {
 
 
 header {
-  margin-top: -3rem;
+  margin-top: -4.5rem;
   display: flex;
   justify-content: space-around;
 }
