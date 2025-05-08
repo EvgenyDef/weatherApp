@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { fetchCurrentWeather } from './api/weather';
 import '@/assets/fonts.css';
 
@@ -8,6 +8,11 @@ const city = ref(null);
 const weatherData = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
+
+const sochiWeather = ref(null);
+const moscowWeather = ref(null);
+const peterburgWeather = ref(null);
+const habarovskWeather = ref(null);
 
 const loadWeather = async () => {
   try {
@@ -22,6 +27,28 @@ const loadWeather = async () => {
   }
 };
 
+const loadCitiesWeather = async () => {
+  try {
+    isLoading.value = true;
+    error.value = null;
+
+    sochiWeather.value = await fetchCurrentWeather("Сочи");
+    moscowWeather.value = await fetchCurrentWeather("Москва");
+    peterburgWeather.value = await fetchCurrentWeather("Санкт-Петербург");
+    habarovskWeather.value = await fetchCurrentWeather("Хабаровск");
+
+    console.log(sochiWeather?.maxtemp_c);
+  } 
+  catch (err) {
+    error.value = 'Не удалось загрузить данные';
+    console.error("Ошибка загрузки данных:", err);
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+onMounted(loadCitiesWeather);
+
 const test = () => {
   console.log("было")
 }
@@ -34,6 +61,9 @@ const handleKeyPress = (e) => {
 </script>
 
 <template>
+  <!--Тут берем иконку градусника-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+
     <header>
       <div class="logo">
         ЯСНО(?)
@@ -55,7 +85,7 @@ const handleKeyPress = (e) => {
       </div> 
     </header>
 
-    <main>
+    <!--<main>
       <section v-if="!isLoading">
         <h1 class="weatherTitle">{{ weatherData }}</h1>
       </section>
@@ -64,9 +94,113 @@ const handleKeyPress = (e) => {
           Узнайте погоду в своём городе
         </h1>
       </section>
+    </main>-->
+    <main>
+      <section v-if="!isLoading" class="main-block">
+        <div>
+          <div class="small-text">
+            <i class='fa fa-thermometer'></i> Температура
+          </div>
+          <div class="average-text">
+            {{ city }}
+          </div>
+          <div class="temperature-block">
+            {{ weatherData?.temp_c }}°
+          </div>
+          <div>
+            {{ weatherData?.condition }}
+          </div>
+          <div>
+            мин. {{ weatherData?.mintemp_c }}° макс. {{ weatherData?.maxtemp_c }}°
+          </div>
+        </div>
+        
+      </section>
+
+      <section v-if="!isLoading">
+        
+          <div class="params">
+            <div class="add-block">
+              Ветер
+              <!--Сделайте стрелку-->
+              <div class="average-text">
+                {{ (weatherData?.wind_kph * 10 / 36).toFixed(1) }} м/с
+              </div>
+            </div>
+            <div class="add-block">
+              Давление
+              <div class="average-text">
+                {{ (weatherData?.pressure * 0.750062).toFixed() }} мм рт. ст.
+              </div>
+            </div>
+          </div>
+
+
+          <div class="params">
+            <div class="add-block">
+              Шанс выпадения осадков
+              <div class="average-text">
+                {{ weatherData?.chance_precip }} %
+              </div>
+            </div>
+            <div class="add-block">
+              Восход и закат
+              <div class="average-text">
+                {{ weatherData?.sunrise }}
+              </div>
+              <div class="average-text">
+                {{ weatherData?.sunset }}
+              </div>
+            </div>
+          </div>
+       
+      </section>
+
+      <section v-else>
+        <h1 class="weatherTitle">
+          Узнайте погоду в своём городе
+        </h1>
+      </section>
     </main>
 
+    <footer>
+      <div>
+        <h3>Погода в других городах</h3>
+      </div>
 
+      <section class="cont">
+        <div class="additional-city">
+          <h2>Сочи</h2>
+          <i class='fa fa-thermometer'></i> <span class="cities-temperature">{{ sochiWeather?.temp_c }}°</span>
+          <div>мин. {{ sochiWeather?.mintemp_c }}° макс. {{ sochiWeather?.maxtemp_c }}°</div>
+          <div> {{ sochiWeather?.condition }}</div>
+        </div>
+
+
+        <div class="additional-city">
+          <h2>Москва</h2>
+          <i class='fa fa-thermometer'></i> <span class="cities-temperature">{{ moscowWeather?.temp_c }}°</span>
+          <div>мин. {{ moscowWeather?.mintemp_c }}° макс. {{ moscowWeather?.maxtemp_c }}°</div>
+          <div> {{ moscowWeather?.condition }}</div>
+        </div>
+
+
+        <div class="additional-city">
+          <h2>Санкт-Петербург</h2>
+          <i class='fa fa-thermometer'></i> <span class="cities-temperature">{{ peterburgWeather?.temp_c }}°</span>
+          <div>мин. {{ peterburgWeather?.mintemp_c }}° макс. {{ peterburgWeather?.maxtemp_c }}°</div>
+          <div> {{ peterburgWeather?.condition }}</div>
+        </div>
+
+
+        <div class="additional-city">
+          <h2>Хабаровск</h2>
+          <i class='fa fa-thermometer'></i> <span class="cities-temperature">{{ habarovskWeather?.temp_c }}°</span>
+          <div>мин. {{ habarovskWeather?.mintemp_c }}° макс. {{ habarovskWeather?.maxtemp_c }}°</div>
+          <div> {{ habarovskWeather?.condition }}</div>
+        </div>
+      </section>
+    </footer>
 
 
 
@@ -74,6 +208,41 @@ const handleKeyPress = (e) => {
 </template>
 
 <style scoped>
+
+footer {
+  margin: 1.5rem 11rem;
+}
+
+.additional-city {
+  width: 15rem;
+  height: 10rem;
+  padding: 0.4rem;
+  border: 0.25rem solid white;
+  border-radius: 25px;
+  background: linear-gradient(to right, #c0cbdf, #EFFBFD);
+}
+
+
+.cont {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.cities-temperature {
+  font-size: 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .temp {
   width: 100%;
@@ -163,6 +332,7 @@ const handleKeyPress = (e) => {
 
 
 header {
+  margin-top: -3rem;
   display: flex;
   justify-content: space-around;
 }
@@ -179,11 +349,12 @@ header {
 }
 
 .main-block {
-  border: 0.25rem solid rgba(255, 255, 255, 0);
+  border: 0.25rem solid white;
   border-radius: 25px;
   background: linear-gradient(to right, #C2E7F5, #EFFBFD);
   margin: 1rem;
-  width: 40%;
+  padding: 1rem;
+  width: 30%;
 }
 
 section {
@@ -206,17 +377,26 @@ section {
 }
 
 .add-block {
-  background-color: #E9F0F6;
+  background-color: #B8B8B8;
+
+  width: 15rem;
+
   margin: 1rem;
-  border: 0.25rem solid #E9F0F6;
+  padding: 0.5rem;
+
+  border: 0.5rem solid white;
   border-radius: 25px;
-  width: 40%;
-  height: 9rem;
+}
+
+.params {
+  display: flex;
+  justify-content: space-between;
 }
 
 main {
+  margin: 1rem 10rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .weather-app {
