@@ -8,13 +8,13 @@ export const fetchCurrentWeather = async (city) => {
     return {
       temp_c: response.data.current.temp_c,
       condition: response.data.current.condition.text,
-      maxtemp_c: response.data.forecast.forecastday[0].maxtemp_c,
-      mintemp_c: response.data.forecast.forecastday[0].mintemp_c,
+      maxtemp_c: response.data.forecast.forecastday[0].day.maxtemp_c,
+      mintemp_c: response.data.forecast.forecastday[0].day.mintemp_c,
       wind_kph: response.data.current.wind_kph,
       wind_degree: response.data.current.wind_degree,
       pressure: response.data.current.pressure_mb,
-      precip: response.data.forecast.forecastday[0].totalprecip_mm,
-      chance_precip: response.data.forecast.forecastday[0].daily_chance_of_rain,
+      precip: response.data.forecast.forecastday[0].day.totalprecip_mm,
+      chance_precip: response.data.forecast.forecastday[0].day.daily_chance_of_rain,
       sunrise: response.data.forecast.forecastday[0].astro.sunrise,
       sunset: response.data.forecast.forecastday[0].astro.sunset,
     };
