@@ -26,9 +26,6 @@ const test = () => {
   console.log("было")
 }
 
-
-
-
 const handleKeyPress = (e) => {
   if (e.key === 'Enter') {
     loadWeather();
@@ -60,7 +57,7 @@ const handleKeyPress = (e) => {
 
     <main>
       <section v-if="!isLoading">
-        <h1 class="weatherTitle">{{ weatherData.temp_c }}</h1>
+        <h1 class="weatherTitle">{{ weatherData }}</h1>
       </section>
       <section v-else>
         <h1 class="weatherTitle">
@@ -116,7 +113,7 @@ const handleKeyPress = (e) => {
   font-size: 16px;
   color: #B8B8B8;
   outline: none;
-  margin-top: 91px;
+  margin-top: 14%;
 }
 
 .input-field::placeholder {
@@ -125,12 +122,44 @@ const handleKeyPress = (e) => {
 }
 
 .logo {
-  font-family: 'Oks Free';
+  font-family: 'Oks';
   font-size: 100px;
+  font-size: 5rem;
   color: #47CCFF;
   margin-top: 40px;
 }
 
+
+@font-face {
+  font-family: Oks;
+  src: url("./components/fonts/Oks Free.otf");
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Light.ttf");
+}
+@font-face {
+  font-weight: 400; 
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Regular.ttf");
+}
+@font-face {
+  font-weight: 500;
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Medium.ttf");
+}
+@font-face {
+  font-weight: 600;
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Semibold.ttf");
+}
+@font-face {
+  font-weight: 700; 
+  font-family: Gilroy;
+  src: url("./components/fonts/Gilroy-Bold.ttf");
+}
 
 
 header {
@@ -158,15 +187,22 @@ header {
 }
 
 section {
-  font-family: "Oks free";
+  font-family: Gilroy;
 }
 
 .small-text {
   font-size: 1.2rem;
+  font-family: Gilroy;
+  font-weight: 500;
+}
+
+.numbers {
+  font-family: Oks;
 }
 
 .average-text {
   font-size: 2.3rem;
+  font-weight: 600;
 }
 
 .add-block {
@@ -186,7 +222,7 @@ main {
 .weather-app {
   max-width: 375px;
   margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Gilroy";
   background: linear-gradient(to bottom, #3a7bd5, #00d2ff);
   color: white;
   border-radius: 20px;
@@ -247,6 +283,7 @@ main {
 .detail-label {
   font-size: 12px;
   opacity: 0.8;
+  font-weight: 500;
 }
 
 .wind-icon {
