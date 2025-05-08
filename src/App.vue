@@ -1,15 +1,15 @@
 <script setup>
+
 import { ref } from 'vue';
 import { fetchCurrentWeather } from './api/weather';
+import '@/assets/fonts.css';
 
 const city = ref(null); 
 const weatherData = ref(null);
-const isLoading = ref(false);
+const isLoading = ref(true);
 const error = ref(null);
 
 const loadWeather = async () => {
-  if (!city.value.trim()) return;
-
   try {
     isLoading.value = true;
     error.value = null;
@@ -22,7 +22,12 @@ const loadWeather = async () => {
   }
 };
 
-loadWeather();
+const test = () => {
+  console.log("было")
+}
+
+
+
 
 const handleKeyPress = (e) => {
   if (e.key === 'Enter') {
@@ -32,132 +37,43 @@ const handleKeyPress = (e) => {
 </script>
 
 <template>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <section class="temp">
     <header>
       <div class="logo">
-        ЯСНО?
-      </div>
-      <div>
-        <input
-        v-model="city"
-        @keypress="handleKeyPress"
-        placeholder="Введите город"
-        class="search-input"
-        />
+        ЯСНО(?)
       </div>
       
-    </header>
-
-
-    <main>
-      <section v-if="!isLoading" class="weather-content main-block">
-        <section>
-          <div class="small-text">
-            <i class='fa fa-thermometer'></i> Температура
-          </div>
-          <div class="average-text">
-            {{ city }}
-          </div>
-          <div class="temperature-block">
-            {{ weatherData?.temp_c }}°
-          </div>
-          <div>
-            <!--Здесь необзодимо выводить информацию о типе погоды (обласночть, переменная обласночть и тд) вместе с иконкой-->
-          </div>
-          <div>
-            <!--Здесь нужно вывести минимальную и максимальную температуру-->
-          </div>
-        </section>  
-      </section>
-        
-      <section v-if="!isLoading">
-        <div class="details-grid add-block">
-          <div class="detail-card">
-            <div class="detail-icon">💧</div>
-            <div class="detail-value">{{ weatherData?.humidity }}%</div>
-            <div class="detail-label">Влажность</div>
-          </div>
-          
-          <div class="detail-card">
-            <div class="detail-icon">
-              <svg class="wind-icon" viewBox="0 0 24 24" :style="{ transform: `rotate(${weatherData?.wind_degree}deg)` }"> 
-                <path d="M12 2L4 12L12 22M20 12H4"/>
-              </svg>
-            </div>
-            <div class="detail-value">{{ (weatherData?.wind_kph * 10 / 36).toFixed(1) }}</div>
-            <div class="detail-label">м/с {{ weatherData?.wind_dir }}</div>
-          </div>
-          
-          <div class="detail-card">
-            <div class="detail-icon">⏱️</div>
-            <div class="detail-value">{{ (weatherData?.pressure_mb * 0.750062).toFixed() }}</div>
-            <div class="detail-label">мм рт.ст.</div>
-          </div>
-        </div>
-      </section>
-    
-      <section v-else class="loading-section">
-        <div class="loading-spinner"></div>
-      </section>
-    </main>
-
-    <bottom>
-
-    </bottom>
-  </section>
-
-
-
-  <!--<div class="weather-app">   
-    <div class="search-container">
+      <div class="custom-input">
+        <img 
+        src="@/components/icons/search.svg" 
+        alt="Search" 
+        class="input-icon"
+        @click="loadWeather"
+      >
       <input
         v-model="city"
         @keypress="handleKeyPress"
-        placeholder="Введите город"
-        class="search-input"
-      />
-      <button @click="loadWeather" class="search-button">
-        Поиск
-      </button>
-    </div> 
-    <div class="header">Погода</div>
-    
-    <section v-if="!isLoading" class="weather-content">
-      <div class="temperature-block">
-        {{ weatherData?.temp_c }}°
-      </div>
-      
-      <div class="details-grid">
-        <div class="detail-card">
-          <div class="detail-icon">💧</div>
-          <div class="detail-value">{{ weatherData?.humidity }}%</div>
-          <div class="detail-label">Влажность</div>
-        </div>
-        
-        <div class="detail-card">
-          <div class="detail-icon">
-            <svg class="wind-icon" viewBox="0 0 24 24" :style="{ transform: `rotate(${weatherData?.wind_degree}deg)` }"> 
-              <path d="M12 2L4 12L12 22M20 12H4"/>
-            </svg>
-          </div>
-          <div class="detail-value">{{ (weatherData?.wind_kph * 10 / 36).toFixed(1) }}</div>
-          <div class="detail-label">м/с {{ weatherData?.wind_dir }}</div>
-        </div>
-        
-        <div class="detail-card">
-          <div class="detail-icon">⏱️</div>
-          <div class="detail-value">{{ (weatherData?.pressure_mb * 0.750062).toFixed() }}</div>
-          <div class="detail-label">мм рт.ст.</div>
-        </div>
-      </div>
-    </section>
-    
-    <section v-else class="loading-section">
-      <div class="loading-spinner"></div>
-    </section>
-  </div>-->
+        placeholder="В каком городе вы находитесь?"
+        class="input-field"
+        />
+      </div> 
+    </header>
+
+    <main>
+      <section v-if="!isLoading">
+        <h1 class="weatherTitle">{{ weatherData.temp_c }}</h1>
+      </section>
+      <section v-else>
+        <h1 class="weatherTitle">
+          Узнайте погоду в своём городе
+        </h1>
+      </section>
+    </main>
+
+
+
+
+
+
 </template>
 
 <style scoped>
@@ -165,15 +81,57 @@ const handleKeyPress = (e) => {
 .temp {
   width: 100%;
   height: 90%;
-  border:  0.5rem solid #00d2ff; 
-  margin-top: 1%; 
+}
 
+.custom-input {
+  position: relative;
+  width: 550px;
+}
+
+.input-icon {
+  margin-top: 3.5%;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+}
+
+.input-icon:hover {
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.weatherTitle {
+  color: black;
+}
+
+.input-field {
+  width: 100%;
+  height: 78px;
+  padding: 0 60px;
+  border: 2px solid #B8B8B8;
+  border-radius: 10px;
+  font-family: "Gilroy";
+  font-size: 16px;
+  color: #B8B8B8;
+  outline: none;
+  margin-top: 91px;
+}
+
+.input-field::placeholder {
+  color: #B8B8B8;
+  opacity: 1;
 }
 
 .logo {
-  font-size: 3.5rem;
+  font-family: 'Oks Free';
+  font-size: 100px;
   color: #47CCFF;
+  margin-top: 40px;
 }
+
+
 
 header {
   display: flex;
@@ -182,8 +140,13 @@ header {
 
 
 .search-input {
-  font-size: 3.5rem;
-  margin-top: 0.5rem;
+  border-radius: 10px;
+  border-color: #B8B8B8;
+  font-family: "Gilroy";
+  width: 550px;
+  height: 78px;
+  font-size: 18px;
+  margin-top: 91px;
 }
 
 .main-block {
@@ -219,11 +182,6 @@ main {
   display: flex;
   justify-content: space-around;
 }
-
-
-
-
-
 
 .weather-app {
   max-width: 375px;
