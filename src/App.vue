@@ -4,7 +4,8 @@ import { ref, onMounted } from 'vue';
 import { fetchCurrentWeather } from './api/weather';
 import '@/assets/fonts.css';
 
-const city = ref(null); 
+const tempCity = ref(null); 
+let city = null;
 const weatherData = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
@@ -16,9 +17,10 @@ const habarovskWeather = ref(null);
 
 const loadWeather = async () => {
   try {
+    city = tempCity.value
     isLoading.value = true;
     error.value = null;
-    weatherData.value = await fetchCurrentWeather(city.value);
+    weatherData.value = await fetchCurrentWeather(city);
   } catch (err) {
     error.value = 'Не удалось загрузить данные';
     console.error("Ошибка загрузки данных:", err);
@@ -29,7 +31,6 @@ const loadWeather = async () => {
 
 const loadCitiesWeather = async () => {
   try {
-    isLoading.value = true;
     error.value = null;
 
     sochiWeather.value = await fetchCurrentWeather("Сочи");
@@ -42,8 +43,6 @@ const loadCitiesWeather = async () => {
   catch (err) {
     error.value = 'Не удалось загрузить данные';
     console.error("Ошибка загрузки данных:", err);
-  } finally {
-    isLoading.value = false;
   }
 }
 
@@ -77,7 +76,7 @@ const handleKeyPress = (e) => {
         @click="loadWeather"
       >
       <input
-        v-model="city"
+        v-model="tempCity"
         @keypress="handleKeyPress"
         placeholder="В каком городе вы находитесь?"
         class="input-field"
@@ -85,16 +84,6 @@ const handleKeyPress = (e) => {
       </div> 
     </header>
 
-    <!--<main>
-      <section v-if="!isLoading">
-        <h1 class="weatherTitle">{{ weatherData }}</h1>
-      </section>
-      <section v-else>
-        <h1 class="weatherTitle">
-          Узнайте погоду в своём городе
-        </h1>
-      </section>
-    </main>-->
     <main>
       <section v-if="!isLoading" class="main-block">
         <div>
@@ -157,9 +146,17 @@ const handleKeyPress = (e) => {
       </section>
 
       <section v-else>
-        <h1 class="weatherTitle">
-          Узнайте погоду в своём городе
-        </h1>
+        <div class="noInfoContainer">
+          <div class="weatherTitle">
+            Узнайте погоду в своём городе
+          </div>
+          <div>
+            <img 
+            src="@/components/icons/Vector 1.svg" 
+            class="arrowToFind"
+            >
+          </div>
+        </div>
       </section>
     </main>
 
@@ -222,7 +219,9 @@ footer {
   background: linear-gradient(to right, #c0cbdf, #EFFBFD);
 }
 
-
+.arrowToFind{
+  margin-left: -40%;
+}
 .cont {
   display: flex;
   justify-content: space-between;
@@ -257,8 +256,17 @@ footer {
   cursor: pointer;
 }
 
+.noInfoContainer{
+  display: flex;
+  pointer-events: none;
+}
 .weatherTitle {
-  color: black;
+  color: #B8B8B8;
+  font-family: "Gilroy-m";
+  font-size: 35px;
+  min-width: 700px;
+  margin-top: 20%;
+  text-align: center;
 }
 
 .input-field {
@@ -305,7 +313,7 @@ footer {
 }
 @font-face {
   font-weight: 500;
-  font-family: Gilroy;
+  font-family: Gilroy-m;
   src: url("./components/fonts/Gilroy-Medium.ttf");
 }
 @font-face {
@@ -385,7 +393,7 @@ section {
 main {
   margin: 1rem 10rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .weather-app {
@@ -485,5 +493,6 @@ main {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
 
 </style>
