@@ -29,6 +29,57 @@ const loadWeather = async () => {
   }
 };
 
+const weatherConditions = {
+  1000: "Солнечно",
+  1003: "Переменная облачность",
+  1006: "Облачно",
+  1009: "Пасмурно",
+  1030: "Туман",
+  1063: "Возможен местами дождь",
+  1066: "Возможен местами снег",
+  1069: "Возможна местами мокрая метель",
+  1072: "Возможна местами ледяная морось",
+  1087: "Возможны местами грозы",
+  1114: "Метель",
+  1117: "Сильная метель",
+  1135: "Сильный туман",
+  1147: "Ледяной туман",
+  1150: "Местами легкая морось",
+  1153: "Легкая морось",
+  1168: "Ледяная морось",
+  1171: "Сильная ледяная морось",
+  1180: "Местами небольшой дождь",
+  1183: "Небольшой дождь",
+  1186: "Умеренный дождь временами",
+  1189: "Умеренный дождь",
+  1192: "Сильный дождь временами",
+  1195: "Сильный дождь",
+  1198: "Небольшой ледяной дождь",
+  1201: "Умеренный или сильный ледяной дождь",
+  1204: "Небольшой мокрый снег",
+  1207: "Умеренный или сильный мокрый снег",
+  1210: "Местами небольшой снег",
+  1213: "Небольшой снег",
+  1216: "Местами умеренный снег",
+  1219: "Умеренный снег",
+  1222: "Местами сильный снег",
+  1225: "Сильный снег",
+  1237: "Ледяная крупа",
+  1240: "Небольшой ливень",
+  1243: "Умеренный или сильный ливень",
+  1246: "Сильный ливень",
+  1249: "Небольшие ливни с мокрым снегом",
+  1252: "Умеренные или сильные ливни с мокрым снегом",
+  1255: "Небольшие снегопады",
+  1258: "Умеренные или сильные снегопады",
+  1261: "Небольшие ливни ледяной крупы",
+  1264: "Умеренные или сильные ливни ледяной крупы",
+  1273: "Местами небольшой дождь с грозой",
+  1276: "Умеренный или сильный дождь с грозой",
+  1279: "Местами небольшой снег с грозой",
+  1282: "Умеренный или сильный снег с грозой"
+};
+
 const loadCitiesWeather = async () => {
   try {
     error.value = null;
@@ -88,7 +139,8 @@ const handleKeyPress = (e) => {
       <section v-if="!isLoading" class="main-block">
         <div>
           <div class="small-text">
-            <i class='fa fa-thermometer'></i> Температура
+            <img src="@/components/icons/thermometer-03.svg" class="conditionIcon">
+            температура
           </div>
           <div class="average-text">
             {{ city }}
@@ -96,11 +148,15 @@ const handleKeyPress = (e) => {
           <div class="temperature-block">
             {{ weatherData?.temp_c }}°
           </div>
-          <div>
-            {{ weatherData?.condition }}
+          <div class="condition-block">
+            <img :src="weatherData?.condition_icon" style="max-block-size: 43px; vertical-align: middle;">
+            {{ weatherConditions[weatherData?.condition] }}
           </div>
-          <div>
-            мин. {{ weatherData?.mintemp_c }}° макс. {{ weatherData?.maxtemp_c }}°
+          <div class="minmaxTemp-block">
+            <img src="@/components/icons/arrow-narrow-down.svg" class="conditionIcon">
+            {{ weatherData?.mintemp_c }}° 
+            <img src="@/components/icons/arrow-narrow-up-1.svg" class="conditionIcon">
+            {{ weatherData?.maxtemp_c }}°
           </div>
         </div>
         
@@ -109,36 +165,59 @@ const handleKeyPress = (e) => {
       <section v-if="!isLoading">
         
           <div class="params">
-            <div class="add-block">
-              Ветер
-              <!--Сделайте стрелку-->
-              <div class="average-text">
+            <div class="add-block-1">
+              <div class="small-text">
+                  <img src="@/components/icons/wind-02.svg" class="conditionIcon">
+              ветер
+              </div>
+              <div style="text-align: center;">
+                <span class="arrow" :style="{ transform: `rotate(${weatherData?.wind_degree}deg)` }">&uarr;</span>
+              </div>
+              
+              <div class="average-text" style="text-align: center;">
                 {{ (weatherData?.wind_kph * 10 / 36).toFixed(1) }} м/с
               </div>
             </div>
-            <div class="add-block">
-              Давление
-              <div class="average-text">
-                {{ (weatherData?.pressure * 0.750062).toFixed() }} мм рт. ст.
+            <div class="add-block-1">
+              <div class="small-text">
+                  <img src="@/components/icons/speedometer-04.svg" class="conditionIcon">
+                  давление
+              </div>
+              <div class="average-text" style="text-align: center;">
+                {{ (weatherData?.pressure * 0.750062).toFixed() }} 
+                <p>мм рт. ст.</p>
+                
               </div>
             </div>
           </div>
 
 
           <div class="params">
-            <div class="add-block">
-              Шанс выпадения осадков
+            <div class="add-block-2">
+              <div class="small-text">
+                  <img src="@/components/icons/droplets-03.svg" class="conditionIcon">
+                  осадки
+                  <div class="average-text" style="margin-left: 0%;">
+                    {{ weatherData?.precip }} мм
+                  </div>
+              </div>
+              <p style="margin-left: 5%;">вероятность осадков</p>
               <div class="average-text">
                 {{ weatherData?.chance_precip }} %
               </div>
             </div>
-            <div class="add-block">
-              Восход и закат
-              <div class="average-text">
-                {{ weatherData?.sunrise }}
+            <div class="add-block-2">
+              <div class="small-text">
+                  <img src="@/components/icons/sun-setting-01.svg" class="conditionIcon">
+                  восход и закат
               </div>
               <div class="average-text">
-                {{ weatherData?.sunset }}
+                  <img src="@/components/icons/sunrise.svg" class="conditionIcon">
+                  {{ weatherData?.sunrise }}
+              </div>
+              <div class="average-text">
+                  <img src="@/components/icons/sunset.svg" class="conditionIcon">
+                  {{ weatherData?.sunset }}
               </div>
             </div>
           </div>
@@ -170,7 +249,10 @@ const handleKeyPress = (e) => {
           <h2>Сочи</h2>
           <img src="@/components/icons/thermometer-03.svg" alt="thermometer" class="thermometer"> <span class="cities-temperature">{{ sochiWeather?.temp_c }}°</span>
           <div><img src="@/components/icons/arrow-narrow-down.svg" alt="arrow-narrow-down" class="arrow"> {{ sochiWeather?.mintemp_c }}° <img src="@/components/icons/arrow-narrow-up-1.svg" alt="arrow-narrow-up" class="arrow"> {{ sochiWeather?.maxtemp_c }}°</div>
-          <div> {{ sochiWeather?.condition }}</div>
+          <div> 
+            <img :src="sochiWeather?.condition_icon" class="conditionIcon">
+            {{ weatherConditions[sochiWeather?.condition] }}
+          </div>
         </div>
 
 
@@ -178,7 +260,10 @@ const handleKeyPress = (e) => {
           <h2>Москва</h2>
           <img src="@/components/icons/thermometer-03.svg" alt="thermometer" class="thermometer"> <span class="cities-temperature">{{ moscowWeather?.temp_c }}°</span>
           <div><img src="@/components/icons/arrow-narrow-down.svg" alt="arrow-narrow-down" class="arrow"> {{ moscowWeather?.mintemp_c }}° <img src="@/components/icons/arrow-narrow-up-1.svg" alt="arrow-narrow-up" class="arrow"> {{ moscowWeather?.maxtemp_c }}°</div>
-          <div> {{ moscowWeather?.condition }}</div>
+          <div> 
+            <img :src="moscowWeather?.condition_icon" class="conditionIcon">
+            {{ weatherConditions[moscowWeather?.condition] }}
+          </div>
         </div>
 
 
@@ -186,7 +271,10 @@ const handleKeyPress = (e) => {
           <h2>Санкт-Петербург</h2>
           <img src="@/components/icons/thermometer-03.svg" alt="thermometer" class="thermometer"> <span class="cities-temperature">{{ peterburgWeather?.temp_c }}°</span> 
           <div><img src="@/components/icons/arrow-narrow-down.svg" alt="arrow-narrow-down" class="arrow"> {{ peterburgWeather?.mintemp_c }}° <img src="@/components/icons/arrow-narrow-up-1.svg" alt="arrow-narrow-up" class="arrow"> {{ peterburgWeather?.maxtemp_c }}°</div>
-          <div> {{ peterburgWeather?.condition }}</div>
+          <div> 
+            <img :src="peterburgWeather?.condition_icon" class="conditionIcon">
+            {{ weatherConditions[peterburgWeather?.condition] }}
+          </div>
         </div>
 
 
@@ -194,7 +282,9 @@ const handleKeyPress = (e) => {
           <h2>Хабаровск</h2>
           <img src="@/components/icons/thermometer-03.svg" alt="thermometer" class="thermometer"> <span class="cities-temperature">{{ habarovskWeather?.temp_c }}°</span>
           <div><img src="@/components/icons/arrow-narrow-down.svg" alt="arrow-narrow-down" class="arrow"> {{ habarovskWeather?.mintemp_c }}° <img src="@/components/icons/arrow-narrow-up-1.svg" alt="arrow-narrow-up" class="arrow"> {{ habarovskWeather?.maxtemp_c }}°</div>
-          <div> {{ habarovskWeather?.condition }}</div>
+          <div> 
+            <img :src="habarovskWeather?.condition_icon" class="conditionIcon">
+            {{ weatherConditions[habarovskWeather?.condition] }}</div>
         </div>
       </section>
     </footer>
@@ -206,8 +296,20 @@ const handleKeyPress = (e) => {
 
 <style scoped>
 
+.conditionIcon {
+  vertical-align: middle;
+  max-block-size: 24px;
+}
+
 footer {
   margin: 1.5rem 11rem;
+}
+
+.arrow {
+  text-align: center;
+  display: inline-block; 
+  font-size: 3.5em; 
+  transition: transform 0.3s ease-in-out; 
 }
 
 .additional-city {
@@ -351,6 +453,8 @@ header {
 
 .main-block {
   border: 0.25rem solid white;
+  min-width: 450px;
+  min-height: 400px;
   border-radius: 25px;
   background: linear-gradient(to right, #C2E7F5, #EFFBFD);
   margin: 1rem;
@@ -358,13 +462,20 @@ header {
   width: 30%;
 }
 
+.condition-block{
+  margin-left: 5%;
+  font-family: Gilroy-m;
+  font-size: 25px;
+}
+
 section {
   font-family: Gilroy;
 }
 
 .small-text {
+  margin: 5%;
   font-size: 1.2rem;
-  font-family: Gilroy;
+  font-family: Gilroy-m;
   font-weight: 500;
 }
 
@@ -373,14 +484,29 @@ section {
 }
 
 .average-text {
-  font-size: 2.3rem;
+  margin-left: 5%;
+  font-size: 35px;
   font-weight: 600;
 }
 
-.add-block {
-  background-color: #B8B8B8;
+.add-block-1 {
+  background-color: #E9F0F6;
 
-  width: 15rem;
+  min-width: 225px;
+  min-height: 212px;
+
+  margin: 1rem;
+  padding: 0.5rem;
+
+  border: 0.5rem solid white;
+  border-radius: 25px;
+}
+
+.add-block-2 {
+  background-color: #E9F0F6;
+
+  min-width: 225px;
+  min-height: 177px;
 
   margin: 1rem;
   padding: 0.5rem;
@@ -426,10 +552,19 @@ main {
 }
 
 .temperature-block {
-  font-size: 72px;
+  margin-top: -8%;
+  margin-left: 5%;
+  font-size: 87px;
+  font-family: Oks;
   font-weight: 300;
   margin-bottom: 30px;
 
+}
+
+.minmaxTemp-block{
+  margin-left: 5%;
+  font-weight: 600;
+  font-size: 24px;
 }
 
 .details-grid {

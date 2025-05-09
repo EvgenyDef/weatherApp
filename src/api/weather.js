@@ -7,7 +7,8 @@ export const fetchCurrentWeather = async (city) => {
     );
     return {
       temp_c: response.data.current.temp_c,
-      condition: response.data.current.condition.text,
+      condition: Number(response.data.current.condition.code),
+      condition_icon: response.data.current.condition.icon,
       maxtemp_c: response.data.forecast.forecastday[0].day.maxtemp_c,
       mintemp_c: response.data.forecast.forecastday[0].day.mintemp_c,
       wind_kph: response.data.current.wind_kph,
