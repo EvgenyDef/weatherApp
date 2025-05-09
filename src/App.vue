@@ -233,17 +233,6 @@ footer {
   font-size: 1.5rem;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .temp {
   width: 100%;
   height: 90%;
@@ -332,7 +321,7 @@ footer {
 
 
 header {
-  margin-top: -4.5rem;
+  margin-top: -3%;
   display: flex;
   justify-content: space-around;
 }
@@ -439,7 +428,7 @@ main {
 }
 
 .detail-card {
-  background: rgba(255, 255, 255, 0.2);
+  background: black;
   backdrop-filter: blur(10px);
   border-radius: 12px;
   padding: 15px;
@@ -497,10 +486,4 @@ main {
   to { transform: rotate(360deg); }
 }
 
-/* Адаптация для темной темы */
-@media (prefers-color-scheme: dark) {
-  .weather-app {
-    background: linear-gradient(to bottom, #1a2a4e, #3a7bd5);
-  }
-}
 </style>
