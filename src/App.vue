@@ -171,32 +171,32 @@ const handleKeyPress = (e) => {
       <section class="cont">
         <div class="additional-city">
           <h2>Сочи</h2>
-          <i class='fa fa-thermometer'></i> <span class="cities-temperature">{{ sochiWeather?.temp_c }}°</span>
-          <div>мин. {{ sochiWeather?.mintemp_c }}° макс. {{ sochiWeather?.maxtemp_c }}°</div>
+          <img src="@/components/icons/thermometer-03.svg" alt="thermometer" class="thermometer"> <span class="cities-temperature">{{ sochiWeather?.temp_c }}°</span>
+          <div><img src="@/components/icons/arrow-narrow-down.svg" alt="arrow-narrow-down" class="arrow"> {{ sochiWeather?.mintemp_c }}° <img src="@/components/icons/arrow-narrow-up-1.svg" alt="arrow-narrow-up" class="arrow"> {{ sochiWeather?.maxtemp_c }}°</div>
           <div> {{ sochiWeather?.condition }}</div>
         </div>
 
 
         <div class="additional-city">
           <h2>Москва</h2>
-          <i class='fa fa-thermometer'></i> <span class="cities-temperature">{{ moscowWeather?.temp_c }}°</span>
-          <div>мин. {{ moscowWeather?.mintemp_c }}° макс. {{ moscowWeather?.maxtemp_c }}°</div>
+          <img src="@/components/icons/thermometer-03.svg" alt="thermometer" class="thermometer"> <span class="cities-temperature">{{ moscowWeather?.temp_c }}°</span>
+          <div><img src="@/components/icons/arrow-narrow-down.svg" alt="arrow-narrow-down" class="arrow"> {{ moscowWeather?.mintemp_c }}° <img src="@/components/icons/arrow-narrow-up-1.svg" alt="arrow-narrow-up" class="arrow"> {{ moscowWeather?.maxtemp_c }}°</div>
           <div> {{ moscowWeather?.condition }}</div>
         </div>
 
 
         <div class="additional-city">
           <h2>Санкт-Петербург</h2>
-          <i class='fa fa-thermometer'></i> <span class="cities-temperature">{{ peterburgWeather?.temp_c }}°</span>
-          <div>мин. {{ peterburgWeather?.mintemp_c }}° макс. {{ peterburgWeather?.maxtemp_c }}°</div>
+          <img src="@/components/icons/thermometer-03.svg" alt="thermometer" class="thermometer"> <span class="cities-temperature">{{ peterburgWeather?.temp_c }}°</span> 
+          <div><img src="@/components/icons/arrow-narrow-down.svg" alt="arrow-narrow-down" class="arrow"> {{ peterburgWeather?.mintemp_c }}° <img src="@/components/icons/arrow-narrow-up-1.svg" alt="arrow-narrow-up" class="arrow"> {{ peterburgWeather?.maxtemp_c }}°</div>
           <div> {{ peterburgWeather?.condition }}</div>
         </div>
 
 
         <div class="additional-city">
           <h2>Хабаровск</h2>
-          <i class='fa fa-thermometer'></i> <span class="cities-temperature">{{ habarovskWeather?.temp_c }}°</span>
-          <div>мин. {{ habarovskWeather?.mintemp_c }}° макс. {{ habarovskWeather?.maxtemp_c }}°</div>
+          <img src="@/components/icons/thermometer-03.svg" alt="thermometer" class="thermometer"> <span class="cities-temperature">{{ habarovskWeather?.temp_c }}°</span>
+          <div><img src="@/components/icons/arrow-narrow-down.svg" alt="arrow-narrow-down" class="arrow"> {{ habarovskWeather?.mintemp_c }}° <img src="@/components/icons/arrow-narrow-up-1.svg" alt="arrow-narrow-up" class="arrow"> {{ habarovskWeather?.maxtemp_c }}°</div>
           <div> {{ habarovskWeather?.condition }}</div>
         </div>
       </section>
@@ -222,11 +222,17 @@ footer {
   background: linear-gradient(to right, #c0cbdf, #EFFBFD);
 }
 
-
+.thermometer {
+  width: 1.3rem;
+}
 .cont {
   display: flex;
   justify-content: space-between;
   padding: 1rem 0;
+}
+
+.arrow {
+  width: 1.1rem;
 }
 
 .cities-temperature {
